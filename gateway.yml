@@ -1,0 +1,21 @@
+eureka:
+  client:
+    region:default
+    registryFetchIntervalSeconds:5
+server:
+  port:8085
+spring:
+  application:
+    name:gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+      - id: telemetry-service
+        uri: lb://telemetry-service
+        predicates:
+        - Path=/telemetry-service/**
+        filters:
+        - RewritePath=/telemetry/(?.*), /$\{path}
